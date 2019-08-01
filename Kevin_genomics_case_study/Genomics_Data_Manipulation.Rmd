@@ -1,0 +1,15 @@
+---
+title: "R Notebook"
+author: Kevin Stachelek
+output: html_document
+---
+
+```{r setup, echo = F, message = F, warning = F}
+knitr::opts_chunk$set(message = F, warning = F)
+library(tidyverse)
+library(rprojroot)
+library(glue)
+library(fs)
+proj_dir <- rprojroot::find_root(criterion = rprojroot::has_file_pattern("*.Rproj"))
+```
+

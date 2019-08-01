@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Single Cell Analysis and Visualization</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Kevin Stachelek" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Single Cell Analysis and Visualization
+### Kevin Stachelek
+### 2019/04/17 (updated: 2019-07-31)
+
+---
+
+
+
+
+
+
+
+
+### Learning Resources (links)
+
+[Hemberg Lab RNAseq course](https://hemberg-lab.github.io/scRNA.seq.course/index.html)
+
+[Seurat Vignettes](https://satijalab.org/seurat/get_started.html)
+
+[Introduction to Bioconductor](http://osca.bioconductor.org/introduction.html)
+
+---
+
+### Imagine (fantasize) that you have single cell data
+
+&lt;img src="img/exponential_scaling_scrnaseq.png" height="400" style="display: block; margin: auto;" /&gt;
+
+Svensson, Vento-Tormo, and Teichmann (2018)
+
+---
+
+### How can you ask biological questions about it?
+
+![](img/pipeline_diagram.png)&lt;!-- --&gt;
+
+--
+
+#### What do you (and your labmates) do next?
+
+---
+
+### How I manage single cell data in the lab
+
++ Use [rstudio-server](https://www.rstudio.com/products/rstudio/download-server/) via the web browser
+
+--
+
++ ssh connect in a terminal
+
+--
+
++ Use [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/getting_started/overview.html) in the browser (python)
+
+--
+
++ Use a graphical user interface (gui) that manages an sftp connection:
+
+1. Cyberduck (Mac) 
+2. filezilla (Mac/Windows)
+3. PuTTY (Windows)
+
+--
+
++ Use 'Shiny' Web Apps
+
+---
+
+### A Naive Approach
+
+--
+
+### Analysis Pipeline
+
+&lt;img src="img/single_cell_pipeline_flowchart.png" width="300" height="450" /&gt;
+
+---
+
+### Plot hierarchical clustering
+&lt;img src="img/Capture.PNG" width="900" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Calculate Principle Components
+
+&lt;style&gt;
+    #wrap { width: 900px; height: 1000px; padding: 0; overflow: hidden; }
+    #frame { width: 800px; height: 700px; border: 0px solid black; }
+    #frame {
+        -ms-zoom: 0.75;
+        -moz-transform: scale(0.75);
+        -moz-transform-origin: 0 0;
+        -o-transform: scale(0.75);
+        -o-transform-origin: 0 0;
+        -webkit-transform: scale(0.75);
+        -webkit-transform-origin: 0 0;
+    }
+&lt;/style&gt;
+
+&lt;div id="wrap"&gt;
+&lt;iframe id="frame" frameborder="0" scrolling="no" src="img/Plot_1.html"&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+---
+
+### Plot Trajectory
+
+&lt;iframe width="900" height="750" frameborder="0" scrolling="no" src="img/shRB_cluster_colors2.html"&gt;&lt;/iframe&gt;
+
+---
+
+### Calculate Pseudotime
+
+&lt;iframe width="900" height="750" frameborder="0" scrolling="no" src="img/PT_shRB_shCtrl2.html"&gt;&lt;/iframe&gt;
+
+---
+
+### Find Genes Correlated with Pseudotime
+
+&lt;img src="img/spearman_corr_1.PNG" width="900px" /&gt;&lt;img src="img/spearman_corr_2.PNG" width="900px" /&gt;
+
+---
+
+### Why did this not work well?
+
+--
+
++ Normalization 
+
+--
+
++ Batch Effects
+
+--
+
++ Incomplete Dimensional Reduction
+
+--
+
++ Naive Clustering Approach
+
+---
+
+###  The Next Generation: Seurat
+
+#### What is Seurat?
+
+Seurat is an R package designed for QC, analysis, and exploration of single-cell RNA-seq data. 
+
+  Written in R so fits easily into existing analysis
+
+---
+
+### What are the major parts of Seurat?
+
+--
+
+### Dimensional Reduction by PCA
+
+&lt;img src="img/pca.gif" height="400" /&gt;
+
+---
+
+### Graph Construction and Clustering
+
+&lt;img src="img/phenograph.jpg" height="400" style="display: block; margin: auto;" /&gt;
+
+---
+
+### Further Dimensional Reduction
+
+#### Several Techniques: most common is tSNE or UMAP
+
+&lt;img src="img/tsne_v_umap.gif" width="960" height="480" /&gt;
+
+---
+
+### Seurat
+
+Advantages:
+
+1. Batch Correction aka 'integration'.  
+
+2. Label Transfer across experiments  
+
+3. Normalization 
+
+---
+
+### Batch Correction aka integration.  
+
+Seurat v3 implements methods to identify ‘anchors’ across diverse single-cell data types to construct harmonized references, or to transfer information across experiments.
+Stuart, Butler, Hoffman, Hafemeister, Papalexi, Mauck, Stoeckius, Smibert, and Satija (2018)
+
+&lt;img src="img/stuart_integration_diagram.png" width="900" /&gt;
+
+---
+
+### Label Transfer across experiments  
+
+We can use the same batch correction technique to predict the cluster that a cell from a 'query' dataset would fall into in a reference dataset.
+
+Useful for comparison to published studies 
+
+---
+
+### Normalization 
+
+Seurat v3 includes sctransform, a new modeling approach for the normalization of single-cell data. Compared to standard log-normalization, sctransform effectively removes technically-driven variation while preserving biological heterogeneity.
+
+Hafemeister and Satija (2019)
+
+---
+
+### Some other Approaches to Single Cell Transcriptome Analysis 
+
+1. [Scanpy](https://scanpy.readthedocs.io/en/latest/)
+
+2. [Bioconductor](https://osca.bioconductor.org/)
+  + includes a lot more than just scRNAseq 
+
+---
+
+### [Scanpy](https://scanpy.readthedocs.io/en/latest/) Strengths and Weaknesses
+
+1. Speed
+
+2. Pseudotime Integration - PAGA
+
+3. Makes several machine learning approaches easier to use
+
+  + Denoising Auto Encoder
+  
+  Eraslan, Simon, Mircea, Mueller, and Theis (2019)
+
+  + Integrating Datasets (Batch Correction) using Machine Learning 
+  
+  Lotfollahi, Wolf, and Theis (2018)
+  
+  + Transfer Learning
+  
+  Lotfollahi, Wolf, and Theis (2018)
+  
+---
+
+### [Bioconductor](https://osca.bioconductor.org/)
+
+Bioconductor is a repository of R packages which focuses on software tailored for genomic analysis.
+
+(Think of it as CRAN for bioinformatics)
+
+Bioconductor has strict requirements for a package to be accepted into the repository. 
+
+there is also a focus on high quality documentation and the use of common data infrastructure to promote package interoperability.
+
+---
+
+### Seurat works well! Why Bioconductor?
+
+1. Seurat is written and designed with similar principles to bioconductor. We can better understand Seurat if we get a good grasp of bioconductor. 
+
+--
+
+2. We can extend our analysis to other domains (genomics/epigenomics) with a solid understanding of bioconductor. 
+
+--
+
+3. We can interact with public data and annotation:
+  + Gene Expression Omnibus (GEO)
+  + Sequence Read Archive (SRA)
+  + Annotation-- Refseq, ensembl, gencode
+
+---
+
+### Installing Bioconductor Packages
+
+To install Bioconductor packages, we first need the BiocManager package which is hosted on CRAN. This can be installed by running:
+
+
+
+The BiocManager package makes it easy to install packages from the Bioconductor repository. For example, to install the SingleCellExperiment package, we run:
+
+
+
+---
+
+###  Digression: Getting Help
+
+Reminder: one of the most important R skills is knowing how to get help. The most reliable place to look is inside R!
+
+--
+
+To get the manual associated with a function, class, dataset, or package, you can prepend the code of interest with a ? to retrieve the relevant help page. 
+
+For example, to get information about the data.frame() function, the SingleCellExperiment class, the in-built iris dataset, or for the BiocManager package, you can type:
+
+
+```r
+?data.frame
+?SingleCellExperiment
+?iris
+?BiocManager
+```
+
+---
+
+### the `SingleCellExperiment` object
+
+The motivation: 
+
+RNA sequencing data consists of three major parts: 
+
+1. The expression data (counts)
+  + usually expressed in a matrix of features (genes or transcripts) by row and cells by column.
+
+--
+
+2. The cell-level information (colData)
+
+--
+
+3. The feature-level information (featureData)
+
+--
+
+__It can be a pain to keep track of this in many separate objects__
+
+So we use a specialized object from the Bioconductor ecosystem, the `SingleCellExperiment`
+
+---
+
+### Single Cell Experiment
+
+![The Single Cell Experiment](singlecellexperiment.png)
+
+---
+
+### So many tools!
+
+
+&lt;blockquote class="twitter-tweet" data-lang="en"&gt;&lt;p lang="en" dir="ltr"&gt;Too many awesome new datasets, biological findings, ML methods every second of every day. And they are spawning too many new ideas. I luv science &amp;amp; I&amp;#39;m going crazy (in a good way) that I can&amp;#39;t keep up with all the coolness and just have one brain and two hands and no time. Fk!!!!&lt;/p&gt;&amp;mdash; ANSHUL KUNDAJE (@anshulkundaje) &lt;a href="https://twitter.com/anshulkundaje/status/1116398619072942080?ref_src=twsrc%5Etfw"&gt;April 11, 2019&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+
+--
+
+### What's the most efficient way to pursue your (biological) questions?
+
+---
+
+### Step 1: Data Science for all
+
+
+.pull-left[
+
+&lt;span style="font-size: 200%"&gt;[R for Data Science](https://r4ds.had.co.nz/)&lt;/span&gt;
+
+&lt;span style="font-size: 200%"&gt;[rstudio cheat sheets](https://www.rstudio.com/resources/cheatsheets/)&lt;/span&gt;
+]
+
+.pull-right[
+
+![](img/r4ds.png)&lt;!-- --&gt;
+
+]
+
+---
+
+### Step 2: Graphical User Interfaces(GUIs) for some
+
+#### scRNA Visualization Tools
+
+1. [scClustViz](https://baderlab.github.io/scClustViz/)
+
+2. [iSEE](https://bioconductor.org/packages/release/bioc/html/iSEE.html)
+
+---
+
+### scClustViz
+
+[Developmental Emergence of Adult Neural Stem Cells as Revealed by Single-Cell Transcriptional Profiling](https://innesbt.shinyapps.io/scclustvizdemoapp/)
+
+---
+
+### iSEE
+
+1. [a small single-cell RNA-seq dataset from the mouse visual cortex](https://marionilab.cruk.cam.ac.uk/iSEE_allen/)
+2. [The Cancer Genome Atlas RNA-seq dataset](https://marionilab.cruk.cam.ac.uk/iSEE_tcga/)
+3. [a droplet-based single-cell RNA-seq dataset involving peripheral blood mononuclear cells](https://marionilab.cruk.cam.ac.uk/iSEE_pbmc4k/)
+4. [a mass cytometry dataset from healthy and diseased human donors](https://marionilab.cruk.cam.ac.uk/iSEE_cytof/)
+
+---
+
+### Or make your own with Shiny and Plotly!
+
+Seurat outputs ggplot objects from all its plotting functions
+
+The `plotly` R package can turn these into interactive `plotly` plots
+
+Shiny is an R package that makes it easy to build interactive web apps straight from R. You can then display these plots in your own custom shiny app
+
+---
+
+### References
+
+Eraslan, G, L. M. Simon, M. Mircea, et al. (2019). "Single-cell
+RNA-seq denoising using a deep count autoencoder". En. In: _Nature
+Communications_ 10.1, p. 390. ISSN: 2041-1723. DOI:
+[10.1038/s41467-018-07931-2](https://doi.org/10.1038%2Fs41467-018-07931-2).
+URL:
+[https://www.nature.com/articles/s41467-018-07931-2](https://www.nature.com/articles/s41467-018-07931-2)
+(visited on Apr. 11, 2019).
+
+Hafemeister, C. and R. Satija (2019). "Normalization and variance
+stabilization of single-cell RNA-seq data using regularized
+negative binomial regression". En. In: _bioRxiv_, p. 576827. DOI:
+[10.1101/576827](https://doi.org/10.1101%2F576827). URL:
+[https://www.biorxiv.org/content/10.1101/576827v2](https://www.biorxiv.org/content/10.1101/576827v2)
+(visited on Apr. 11, 2019).
+
+Lotfollahi, M, F. A. Wolf, and F. J. Theis (2018). "Generative
+modeling and latent space arithmetics predict single-cell
+perturbation response across cell types, studies and species". En.
+In: _bioRxiv_, p. 478503. DOI:
+[10.1101/478503](https://doi.org/10.1101%2F478503). URL:
+[https://www.biorxiv.org/content/10.1101/478503v2](https://www.biorxiv.org/content/10.1101/478503v2)
+(visited on Apr. 11, 2019).
+
+Stuart, T., A. Butler, P. Hoffman, et al. (2018). _Comprehensive
+integration of single cell data_. En. preprint. Genomics. DOI:
+[10.1101/460147](https://doi.org/10.1101%2F460147). URL:
+[http://biorxiv.org/lookup/doi/10.1101/460147](http://biorxiv.org/lookup/doi/10.1101/460147)
+(visited on Apr. 11, 2019).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
