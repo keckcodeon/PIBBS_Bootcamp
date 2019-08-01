@@ -1,0 +1,188 @@
+---
+title: "R Notebook"
+author: Kevin Stachelek
+output: html_document
+---
+
+```{r setup, echo = F, message = F, warning = F}
+knitr::opts_chunk$set(message = F, warning = F)
+library(tidyverse)
+library(rprojroot)
+library(glue)
+library(fs)
+proj_dir <- rprojroot::find_root(criterion = rprojroot::has_file_pattern("*.Rproj"))
+```
+
+# What is Bioconductor?
+
+
++ Started in 2001 (initially, mostly focused on microarray data)
++ Currently (release 3.8) hosts:
+  + more than 1,600 [software packages](https://www.bioconductor.org/packages/release/BiocViews.html#___Software)
+  + almost 1,000 [annotation packages](https://www.bioconductor.org/packages/release/BiocViews.html#___AnnotationData)
+  + 360 experiment [data packages](https://www.bioconductor.org/packages/release/BiocViews.html#___ExperimentData)
+  + 23 [workflows](https://www.bioconductor.org/packages/release/BiocViews.html#___Workflow)
+  
+---
+
+# What topics does Bioconductor include?
+
++ Covers a wide range of domains:
+  + sequencing (RNA-seq, ChIP-seq, single-cell analysis, variant calling, …)
+  + microarrays (methylation, gene expression, copy number, …)
+  + flow and mass cytometry
+  + proteomics
+  + imaging
+
+--
+
+__Most packages are contributed by the community__
+
+???
+
+There is a core team which, among other things, oversees the project, reviews new package submissions, develops and maintains core infrastructure and maintains daily building and checking of all packages
+
+---
+
+# How to install Bioconductor packages
+
++ Detailed instructions are available online
++ There is a new Bioconductor release twice per year (typically April and October)
++ Between those times, development is going on in the parallel devel branch
++ Do not mix packages from different releases!
++ The available Bioconductor releases also depend on your version of R - if you want the latest Bioconductor packages, you need the latest version of R.
+
+
+--
+
+Bioconductor packages (and also packages hosted on CRAN or GitHub) are installed using the BiocManager CRAN package:
+    
+```{r, eval = F}
+install.packages("BiocManager")
+    BiocManager::install("limma")
+```
+
+--
+
+You can check your Bioconductor installation with
+
+```{r}
+BiocManager::valid()
+```
+
+???
+
+    Each Bioconductor package has a landing page (e.g., http://bioconductor.org/packages/limma/) that contains relevant information, including installation instructions, vignettes and the reference manual:
+
+---
+
+# How to get help with Bioconductor packages
+
+Each function has a help page, detailing all arguments and outputs, and containing runnable examples
+
+
+```{r}
+    library(limma)
+    ?lmFit
+```
+
+Each package comes with at least one vignette, outlining the intended use of the functions in the package to analyze data
+
+If you need help with a Bioconductor package:
+
++ Check the function help pages and the vignette(s) to see whether the answer is there (some packages, like DESeq2, have FAQ sections in their vignette)
+    
++ Go to https://support.bioconductor.org/
+
+???
+
++ The Workflows are complete walkthroughs of specific types of analyses, typically making use of multiple (Bioconductor) R packages
+
+---
+
+# Standard Bioconductor data structures
+
+Everything in R is an object
+
+(Almost) all objects in R have a class
+
+--
+
+```{r}
+# The class function tells you which class(es) an object is of
+class(c("one", "two", "three"))
+
+```
+
+--
+
+```{r, error = T}
+# The class of an object defines the set of allowed operations
+relevel(c("one", "two", "three"), ref = "one")
+```
+
+--
+
+```{r, error = T}
+relevel(factor(c("one", "two", "three")), ref = "two")
+```
+
+---
+
+# Common Bioconductor classes
+
+When working with (biological) data, it often makes sense to define more complex data structures, with several building blocks, and to define appropriate methods for each such class
+
+--
+
+Core Bioconductor packages define many such standardized classes specifically suitable for various types of biological data
+
+--
+
++ It can be difficult to know what methods are defined for a given class. For most Bioconductor classes (all so called S4 classes) one way to find out is via the showMethods() function:
+
+```{r}
+suppressPackageStartupMessages(library(SummarizedExperiment))
+
+showMethods(class = "SummarizedExperiment")
+
+## Alternatively
+methods(class = "SummarizedExperiment")
+```
+
+---
+
+# You can also get more information from the regular help pages, e.g.
+
+```{r}
+
+?"SummarizedExperiment-class"
+getClass("SummarizedExperiment")
+
+```
+
+---
+
+# Why use standardized classes?
+
++ Interoperability
+
++ Recognition
+
++ Robustness
+
+???
+
++ Interoperability - having standard ways of storing and moving data between packages means we don’t have to implement the same thing in multiple places
+
++ Recognition - you don’t have to learn a new representation for each package
+
++ Robustness - standard classes are efficiently implemented and well tested, and come with additional functions to check the validity of provided data
+
+---
+
+## Bioinformatics file types 
+
+```{r, echo = F, out.width = "50%"}
+knitr::include_graphics("", dpi = NA)
+```
