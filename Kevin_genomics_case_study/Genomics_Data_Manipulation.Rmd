@@ -806,7 +806,7 @@ sce <- SingleCellExperiment(assays = list(counts = counts))
 sce
 ```
 
-This is a basic SingleCellExperiment. SingleCellExperiments can be used to store information on the assays along with spikein information, metadata, and even reduced dimensional data such as from PCA and tSNE clusters.
+This is a basic SingleCellExperiment. SingleCellExperiments can be used to store information on the assays along with spikein information, metadata, and even reduced dimensional data such as from PCA and tSNE cluster.
 
 ---
 
