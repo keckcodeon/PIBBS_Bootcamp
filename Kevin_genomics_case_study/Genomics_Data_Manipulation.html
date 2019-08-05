@@ -4,7 +4,7 @@
     <title>Intro to Genomic Data Analysis in R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Kevin Stachelek" />
-    <meta name="date" content="2019-08-01" />
+    <meta name="date" content="2019-08-04" />
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -13,7 +13,7 @@ class: center, middle, inverse, title-slide
 
 # Intro to Genomic Data Analysis in R
 ### Kevin Stachelek
-### 2019-08-01
+### 2019-08-04
 
 ---
 
@@ -45,13 +45,13 @@ class: center, middle, inverse, title-slide
 
 ---
 
-## Genomic and other 'omic data
+# Genomic and other 'omic data
 
 &lt;img src="img/bioinformatics_file_types.jpg" style="display: block; margin: auto;" /&gt;
 
 ---
 
-## Genomic and other 'omic data
+# Genomic and other 'omic data
 
 &lt;img src="img/bioinformatics_file_types_annotated.jpg" style="display: block; margin: auto;" /&gt;
 
@@ -100,82 +100,8 @@ There is a core team which, among other things, oversees the project, reviews ne
 library(Biostrings)
 ```
 
-```
-## Loading required package: BiocGenerics
-```
+--
 
-```
-## Loading required package: parallel
-```
-
-```
-## 
-## Attaching package: 'BiocGenerics'
-```
-
-```
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     IQR, mad, sd, var, xtabs
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, basename, cbind,
-##     colnames, dirname, do.call, duplicated, eval, evalq, Filter,
-##     Find, get, grep, grepl, intersect, is.unsorted, lapply, Map,
-##     mapply, match, mget, order, paste, pmax, pmax.int, pmin,
-##     pmin.int, Position, rank, rbind, Reduce, rownames, sapply,
-##     setdiff, sort, table, tapply, union, unique, unsplit, which,
-##     which.max, which.min
-```
-
-```
-## Loading required package: S4Vectors
-```
-
-```
-## Loading required package: stats4
-```
-
-```
-## 
-## Attaching package: 'S4Vectors'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     expand.grid
-```
-
-```
-## Loading required package: IRanges
-```
-
-```
-## Loading required package: XVector
-```
-
-```
-## 
-## Attaching package: 'Biostrings'
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     strsplit
-```
 
 ```r
 # To create a DNAString object, we can use the DNAString() constructor function. To see how the function works, type ?DNAString.
@@ -193,9 +119,12 @@ head(methods(class = "DNAString"))
 
 ---
 
+# Manipulating Biostrings
+
 
 ```r
-# The classes come with useful validity checks. For example, not all characters are allowed in a DNA string.
+# The classes come with useful validity checks. 
+# For example, not all characters are allowed in a DNA string.
 
 alphabet(DNAString())
 ```
@@ -205,6 +134,9 @@ alphabet(DNAString())
 ## [18] "."
 ```
 
+--
+
+
 ```r
 DNAString(x = "EQI")
 ```
@@ -212,6 +144,8 @@ DNAString(x = "EQI")
 ```
 ## Error in .Call2("new_XString_from_CHARACTER", class(x0), string, start, : key 69 (char 'E') not in lookup table
 ```
+
+--
 
 
 ```r
@@ -222,6 +156,9 @@ alphabet(AAString())
 ##  [1] "A" "R" "N" "D" "C" "Q" "E" "G" "H" "I" "L" "K" "M" "F" "P" "S" "T"
 ## [18] "W" "Y" "V" "U" "O" "B" "J" "Z" "X" "*" "-" "+" "."
 ```
+
+--
+
 
 ```r
 AAString(x = "EQI")
@@ -234,9 +171,11 @@ AAString(x = "EQI")
 
 ---
 
+# Manipulating Biostrings
+
 Once we have defined the object, we can perform operations like
 
-getting the reverse complement the DNA sequence
+getting the reverse complement of the DNA sequence
 
 
 
@@ -264,6 +203,8 @@ reverseComplement("AGGCATAGA")
 
 ---
 
+# Manipulating Biostrings
+
 translating the DNA sequence to an amino acid sequence
 
 
@@ -287,6 +228,8 @@ translate(AAString(x = "EQI"))
 
 ---
 
+# Sets of Biostrings
+
 If we have more than one sequence, we can represent them in a DNAStringSet object, which is a collection of DNAString objects
 
 
@@ -302,10 +245,11 @@ If we have more than one sequence, we can represent them in a DNAStringSet objec
 ## [2]     8 GGTATGAG                                     y
 ```
 
+--
 
 
 ```r
-## Subsetting with [] gives back a DNAStringSet
+# Subsetting with [] gives back a DNAStringSet
 dna_multiple[1]
 ```
 
@@ -314,6 +258,9 @@ dna_multiple[1]
 ##     width seq                                          names               
 ## [1]     9 AGGCATAGA                                    x
 ```
+
+--
+
 
 ```r
 dna_multiple[[1]]
@@ -326,11 +273,13 @@ dna_multiple[[1]]
 
 ---
 
+# Sets of Biostrings
+
 It is also easy to extract subsequences of either an XString or an XStringSet object
 
 
 ```r
-## Get the length of each string
+# Get the length of each string
 width(dna_multiple)
 ```
 
@@ -338,10 +287,11 @@ width(dna_multiple)
 ## [1] 9 8
 ```
 
+--
 
 
 ```r
-## Extract the first three positions in each string
+# Extract the first three positions in each string
 Biostrings::subseq(dna_multiple, start = 1, end = 3)
 ```
 
@@ -354,9 +304,11 @@ Biostrings::subseq(dna_multiple, start = 1, end = 3)
 
 ---
 
+# Sets of Biostrings
+
 
 ```r
-## Extract subsequences of different length
+# Extract subsequences of different length
 Biostrings::subseq(dna_multiple, start = 1, end = c(2, 5))
 ```
 
@@ -388,7 +340,7 @@ Genomic sequence information is often stored in fasta files.
 
 DNAStringSet objects can be created from such files by the readDNAStringSet() function from the Biostrings package. 
 
-Download the gencode.v28.transcripts.1.1.10M.fa file from the course webpage and read it into a DNAStringSet object using this function.
+We are going to a load a file containing human transcripts from Gencode, then read it into a DNAStringSet object using this function.
 
 
 ```r
@@ -396,6 +348,8 @@ txs &lt;- Biostrings::readDNAStringSet("data/gencode.v28.transcripts.1.1.10M.fa"
 ```
 
 ---
+
+# Explore a Sequence File
 
 How many sequences are there in this file?
 
@@ -424,6 +378,8 @@ range(width(txs))
 
 ---
 
+# Explore a Sequence File
+
 Extract the first 10 bases of each sequence
 
 
@@ -447,6 +403,10 @@ Biostrings::subseq(txs, start = 1, end = 10)
 ## [1373]    10 GAGCCTCCGG                                ENST00000294435.7...
 ```
 
+---
+
+# Explore a Sequence File
+
 Get the fraction of A, C, G and T bases in each sequence (hint: there is a function named alphabetFrequency). Plot a histogram of the fraction of Gs across all sequences
 
 --
@@ -458,22 +418,49 @@ fracs &lt;- sweep(freqs, MARGIN = 1, STATS = rowSums(freqs), FUN = "/")
 #hist(fracs[, "G"])
 ```
 
----
+--
 
 What do you think these sequences represent?
-GenomicRanges
-
-The GenomicRanges package holds infrastructure for working with (genomic) ranges
-These can represent, for example, gene coordinates, ChIP-seq peaks, promoters, SNPs, CpG islands
-A GRanges (genomic ranges) object contains, for each range, information about
-    the chromosome (called sequence)
-    the interval (start and end)
-    the strand (either +, - or *)
-The interval is, in turn, represented by a so called IRanges (interval ranges) object
-
-Many of the operations shown below apply equally well to IRanges objects.
 
 ---
+
+# Biostring `Ranges`
+
+In Bioconductor there are two classes, `IRanges` and `GRanges`, 
+that are standard data structures for representing genomics data. 
+
+--
+
+`Ranges` objects can represent either
+1. sets of integers as `IRanges` (which have start, end and width attributes) or 
+2. genomic intervals (which have additional attributes, sequence name, and strand) as `GRanges`. 
+
+--
+
+In addition, both types of `Ranges` can store information
+about their intervals as metadata columns (for example GC content 
+over a genomic interval).
+
+--
+
+`Ranges` objects follow the tidy data principle: 
++ each row of a `Ranges` object corresponds to an interval
++ each column represents a variable about that interval
++ each object will represent a single unit of observation (like gene annotations). 
+
+--
+
+Consequently, `Ranges` objects provide a powerful representation for reasoning about genomic data. 
+
+???
+
+In this vignette, you will learn more about `Ranges` objects and how via grouping, restriction and summarisation you can perform common data tasks. 
+
+---
+
+# GenomicRanges
+
+The GenomicRanges package holds infrastructure for working with (genomic) ranges
 
 
 ```r
@@ -484,171 +471,207 @@ library(GenomicRanges)
 ## Loading required package: GenomeInfoDb
 ```
 
+--
+
+These can represent: gene coordinates, ChIP-seq peaks, promoters, SNPs, CpG islands, etc.
+
+--
+
+A GRanges (genomic ranges) object contains, for each range, information about
+  1. the chromosome (called sequence)
+  1. the interval (start and end)
+  1. the strand (either +, - or *)
+  
+---
+
+# The plyranges package
+
+Plyranges is a package for manipulating genomic data according to 'tidy' data principles. 
+
+It uses intuitive 'verbs' to help clarify your code and obeys a few rules established by the __dplyr__ package and the __tidyverse__ family of R packages.  
+
+--
+
++ Each variable forms a column.
++ Each observation forms a row.
++ Each type of observational unit forms a table.
+
+---
+
+
+# Constructing `Ranges`
+
+To construct an `IRanges` there must be at least two columns that represent either:
++ a starting coordinate
++ finishing coordinate or 
++ the width of the interval. 
+
+--
+
+
 ```r
-    (ir &lt;- IRanges(start = c(3, 10, 50), 
-           end = c(17, 28, 104)))
+suppressPackageStartupMessages(library(plyranges))
+
+df &lt;- data.frame(start=c(2:-1, 13:15), 
+                 width=c(0:3, 2:0))
+
+# produces IRanges
+rng &lt;- df %&gt;% as_iranges()
+rng
+```
+
+```
+## IRanges object with 7 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]         2         1         0
+##   [2]         1         1         1
+##   [3]         0         1         2
+##   [4]        -1         1         3
+##   [5]        13        14         2
+##   [6]        14        14         1
+##   [7]        15        14         0
+```
+
+---
+
+# Construting Granges
+
+To construct a `GRanges` we require an additional column that represents:
++ that sequence name (contig or chromosome id), and 
++ an optional column to represent the strandedness of an interval. 
+
+--
+
+
+```r
+# seqname is required for GRanges, metadata is automatically kept
+grng &lt;- df %&gt;% 
+  transform(seqnames = sample(c("chr1", "chr2"), 7, replace = TRUE),
+         strand = sample(c("+", "-"), 7, replace = TRUE),
+         gc = runif(7)) %&gt;% 
+  as_granges()
+
+grng
+```
+
+```
+## GRanges object with 7 ranges and 1 metadata column:
+##       seqnames    ranges strand |                gc
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |         &lt;numeric&gt;
+##   [1]     chr2       2-1      - | 0.213299330091104
+##   [2]     chr1         1      + | 0.947776073822752
+##   [3]     chr1       0-1      + | 0.395349494647235
+##   [4]     chr1      -1-1      - | 0.668262282619253
+##   [5]     chr1     13-14      + | 0.799143085256219
+##   [6]     chr2        14      + | 0.752724572550505
+##   [7]     chr1     15-14      - | 0.267266670707613
+##   -------
+##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
+```
+
+---
+
+# Arithmetic on Ranges
+
+You can modify a genomic interval by altering the width of the interval while leaving the start, end or midpoint of the coordinates unaltered. 
+
+This is achieved with the `mutate` verb along with `anchor_*` adverbs. 
+
+--
+
+The act of anchoring fixes either the start, end, center coordinates of the 
+`Range` object. 
+
+Anchors are used in combination with either `mutate` or `stretch`.
+
+&lt;img src="img/anchors.png" width="400px" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Arithmetic on Ranges
+
+
+```r
+rng &lt;- as_iranges(data.frame(start=c(1, 2, 3), end=c(5, 2, 8)))
+grng &lt;- as_granges(data.frame(start=c(1, 2, 3), end=c(5, 2, 8), 
+                          seqnames = "seq1",
+                          strand = c("+", "*", "-")))
+```
+
+
+
+```r
+mutate(rng, width = 10)
 ```
 
 ```
 ## IRanges object with 3 ranges and 0 metadata columns:
 ##           start       end     width
 ##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
-##   [1]         3        17        15
-##   [2]        10        28        19
-##   [3]        50       104        55
+##   [1]         1        10        10
+##   [2]         2        11        10
+##   [3]         3        12        10
 ```
-
-
-The IRanges object just represents ranges on the number line. There is no specifically genomic information in there - that’s added when we construct a GRanges object
-
----
 
 
 
 ```r
-(gr &lt;- GRanges(seqnames = c("chr1", "chr1", "chr2"), 
-                   ranges = ir,
-                   strand = c("+", "+", "-")))
+mutate(anchor_start(rng), width = 10)
+```
+
+```
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]         1        10        10
+##   [2]         2        11        10
+##   [3]         3        12        10
+```
+
+
+
+```r
+mutate(anchor_end(rng), width = 10)
+```
+
+```
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]        -4         5        10
+##   [2]        -7         2        10
+##   [3]        -1         8        10
+```
+
+
+
+```r
+mutate(anchor_center(rng), width = 10)
+```
+
+```
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]        -2         7        10
+##   [2]        -3         6        10
+##   [3]         1        10        10
+```
+
+
+
+```r
+mutate(anchor_3p(grng), width = 10) # leave negative strand fixed
 ```
 
 ```
 ## GRanges object with 3 ranges and 0 metadata columns:
 ##       seqnames    ranges strand
 ##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1      3-17      +
-##   [2]     chr1     10-28      +
-##   [3]     chr2    50-104      -
-##   -------
-##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
-```
-
-
-Many operations are defined on the ranges objects. As a first example, it is easy to extract the individual components of the object using accessor functions
-
----
-
-
-
-```r
-start(gr)
-```
-
-```
-## [1]  3 10 50
-```
-
-```r
-end(gr)
-```
-
-```
-## [1]  17  28 104
-```
-
-```r
-width(gr)
-```
-
-```
-## [1] 15 19 55
-```
-
----
-
-We can also get and set information about the reference sequences - there are many different conventions for naming chromosomes!
-
-
-
-```r
-seqlevelsStyle(gr)
-```
-
-```
-## [1] "UCSC"
-```
-
-
-
-```r
-seqlevelsStyle(gr) &lt;- "Ensembl"
-gr
-```
-
-```
-## GRanges object with 3 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]        1      3-17      +
-##   [2]        1     10-28      +
-##   [3]        2    50-104      -
-##   -------
-##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
-```
-
-```r
-seqlevelsStyle(gr) &lt;- "UCSC"
-gr
-```
-
-```
-## GRanges object with 3 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1      3-17      +
-##   [2]     chr1     10-28      +
-##   [3]     chr2    50-104      -
-##   -------
-##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
-```
-
----
-
-There are many ways of subsetting ranges objects (check out methods(class = "GRanges")). For example, we can use the regular [ function (the authors of the GRanges class has defined what this function means for such an object), or we can keep only records on specific chromosomes.
-
-
-
-```r
-gr[1:2]
-```
-
-```
-## GRanges object with 2 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1      3-17      +
-##   [2]     chr1     10-28      +
-##   -------
-##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
-```
-
-
-
-```r
-dropSeqlevels(gr, "chr1", pruning.mode = "coarse")
-```
-
-```
-## GRanges object with 1 range and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr2    50-104      -
-##   -------
-##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
-```
-
----
-
-
-```r
-keepSeqlevels(gr, "chr1", pruning.mode = "coarse")
-```
-
-```
-## GRanges object with 2 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1      3-17      +
-##   [2]     chr1     10-28      +
+##   [1]     seq1      -4-5      +
+##   [2]     seq1      -7-2      *
+##   [3]     seq1      3-12      -
 ##   -------
 ##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 ```
@@ -656,339 +679,845 @@ keepSeqlevels(gr, "chr1", pruning.mode = "coarse")
 
 
 ```r
-keepStandardChromosomes(gr, pruning.mode = "coarse")
+mutate(anchor_5p(grng), width = 10) # leave positive strand fixed
 ```
 
 ```
 ## GRanges object with 3 ranges and 0 metadata columns:
 ##       seqnames    ranges strand
 ##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1      3-17      +
-##   [2]     chr1     10-28      +
-##   [3]     chr2    50-104      -
+##   [1]     seq1      1-10      +
+##   [2]     seq1      2-11      *
+##   [3]     seq1      -1-8      -
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+---
+
+# Arithmetic on Ranges
+
+You can also modify the width of an interval using the `stretch` verb.
+
+
+Without anchoring, this function will extend the interval in either direction by an integer amount. 
+
+With anchoring, either the start, end or midpoint are preserved. 
+
+
+```r
+rng2 &lt;- stretch(anchor_center(rng), 10)
+rng2
+```
+
+```
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]        -4        10        15
+##   [2]        -3         7        11
+##   [3]        -2        13        16
+```
+
+
+
+```r
+stretch(anchor_end(rng2), 10)
+```
+
+```
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]       -14        10        25
+##   [2]       -13         7        21
+##   [3]       -12        13        26
+```
+
+
+
+```r
+stretch(anchor_start(rng2), 10)
+```
+
+```
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]        -4        20        25
+##   [2]        -3        17        21
+##   [3]        -2        23        26
+```
+
+
+
+```r
+stretch(anchor_3p(grng), 10)
+```
+
+```
+## GRanges object with 3 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     seq1      -9-5      +
+##   [2]     seq1      -8-2      *
+##   [3]     seq1      3-18      -
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+
+
+```r
+stretch(anchor_5p(grng), 10)
+```
+
+```
+## GRanges object with 3 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     seq1      1-15      +
+##   [2]     seq1      2-12      *
+##   [3]     seq1      -7-8      -
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+---
+
+# Arithmetic on Ranges
+
+`Ranges` can be shifted left or right. If strand information is available 
+we can also shift upstream or downstream. 
+
+
+```r
+shift_left(rng, 10)
+```
+
+```
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]        -9        -5         5
+##   [2]        -8        -8         1
+##   [3]        -7        -2         6
+```
+
+
+
+```r
+shift_right(rng, 10)
+```
+
+```
+## IRanges object with 3 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]        11        15         5
+##   [2]        12        12         1
+##   [3]        13        18         6
+```
+
+
+
+```r
+shift_upstream(grng, 10)
+```
+
+```
+## GRanges object with 3 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     seq1     -9--5      +
+##   [2]     seq1         2      *
+##   [3]     seq1     13-18      -
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+
+
+```r
+shift_downstream(grng, 10)
+```
+
+```
+## GRanges object with 3 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]     seq1     11-15      +
+##   [2]     seq1         2      *
+##   [3]     seq1     -7--2      -
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+---
+
+# Grouping `Ranges`
+
+Grouping can act on either the core components or the metadata columns of
+a `Ranges` object.
+
+It is most effective when combined with other verbs such as `mutate()`,
+`summarise()`, `filter()`, `reduce_ranges()` or `disjoin_ranges()`.
+
+--
+
+
+```r
+grng &lt;- data.frame(seqnames = sample(c("chr1", "chr2"), 7, replace = TRUE),
+         strand = sample(c("+", "-"), 7, replace = TRUE),
+         gc = runif(7),
+         start = 1:7,
+         width = 10) %&gt;%
+  as_granges()
+```
+
+---
+
+# Restricting `Ranges`
+
+The verb `filter` can be used to restrict rows in the `Ranges`.
+Note that grouping will cause the `filter` to act within each group 
+of the data.
+
+
+```r
+grng %&gt;% filter(gc &lt; 0.3)
+```
+
+```
+## GRanges object with 1 range and 1 metadata column:
+##       seqnames    ranges strand |                gc
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |         &lt;numeric&gt;
+##   [1]     chr1      4-13      - | 0.156847472302616
 ##   -------
 ##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
 ```
 
 ---
 
-Many other operations can be applied to each of the ranges in a GRanges or IRanges object, such as extending all ranges with a certain number of bases in each end
-
+# Restricting `Ranges`
 
 
 ```r
-gr + 5
+grng_by_strand &lt;- grng %&gt;%
+  group_by(strand)
 ```
 
 ```
-## GRanges object with 3 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1     -2-22      +
-##   [2]     chr1      5-33      +
-##   [3]     chr2    45-109      -
+## Warning: `as_quosure()` requires an explicit environment as of rlang 0.3.0.
+## Please supply `env`.
+## This warning is displayed once per session.
+```
+
+```r
+# filtering by group 
+grng_by_strand %&gt;% filter(gc == max(gc)) 
+```
+
+```
+## GRanges object with 2 ranges and 1 metadata column:
+## Groups: strand [2]
+##       seqnames    ranges strand |                gc
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; |         &lt;numeric&gt;
+##   [1]     chr2      3-12      - | 0.825693602673709
+##   [2]     chr1      5-14      + |  0.94412197638303
 ##   -------
 ##   seqinfo: 2 sequences from an unspecified genome; no seqlengths
 ```
 
 ---
 
-Note how this led to a negative start coordinate for the first range. This is not considered a violation since there is no information in the GRanges object which will tell R where the chromosomes (sequences) start and end. To accommodate this, let’s set the sequence lengths to 100 and 200 nt, respectively.
+# Grouping `Ranges`
 
-
-
-```r
-seqlengths(gr)
-```
-
-```
-## chr1 chr2 
-##   NA   NA
-```
-
----
+We also provide the convenience methods `filter_by_overlaps` and 
+`filter_by_non_overlaps` for restricting by any overlapping `Ranges`.
 
 
 ```r
-seqlengths(gr) &lt;- c("chr1" = 100, "chr2" = 200)
-    seqlengths(gr)
+ir0 &lt;- data.frame(start = c(5,10, 15,20), width = 5) %&gt;%
+  as_iranges()
+ir1 &lt;- data.frame(start = 2:6, width = 3:7) %&gt;%
+  as_iranges()
 ```
-
-```
-## chr1 chr2 
-##  100  200
-```
-
-
-
-```r
-gr + 5
-```
-
-```
-## Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 1 out-of-bound range located on sequence
-##   chr1. Note that ranges located on a sequence whose length is
-##   unknown (NA) or on a circular sequence are not considered
-##   out-of-bound (use seqlengths() and isCircular() to get the lengths
-##   and circularity flags of the underlying sequences). You can use
-##   trim() to trim these ranges. See ?`trim,GenomicRanges-method` for
-##   more information.
-```
-
-```
-## GRanges object with 3 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1     -2-22      +
-##   [2]     chr1      5-33      +
-##   [3]     chr2    45-109      -
-##   -------
-##   seqinfo: 2 sequences from an unspecified genome
-```
-
----
-
-Note how we now get a warning that one of the ranges is extending outside of the reference sequences. We can further use the trim() function to remove all parts of ranges that fall outside the boundaries of the reference sequences (this would not do anything if we hadn’t set the sequence lengths).
-
-
-
-```r
-trim(gr + 5)
-```
-
-```
-## Warning in valid.GenomicRanges.seqinfo(x, suggest.trim = TRUE): GRanges object contains 1 out-of-bound range located on sequence
-##   chr1. Note that ranges located on a sequence whose length is
-##   unknown (NA) or on a circular sequence are not considered
-##   out-of-bound (use seqlengths() and isCircular() to get the lengths
-##   and circularity flags of the underlying sequences). You can use
-##   trim() to trim these ranges. See ?`trim,GenomicRanges-method` for
-##   more information.
-```
-
-```
-## GRanges object with 3 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1      1-22      +
-##   [2]     chr1      5-33      +
-##   [3]     chr2    45-109      -
-##   -------
-##   seqinfo: 2 sequences from an unspecified genome
-```
-
---
-
-We can also set a name for the genome that the ranges are supposed to come from. This can be useful e.g. when comparing different sets of ranges, to make sure that they all correspond to the same underlying genome.
-
-
-
-```r
-genome(gr) &lt;- "hg19"
-    gr
-```
-
-```
-## GRanges object with 3 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1      3-17      +
-##   [2]     chr1     10-28      +
-##   [3]     chr2    50-104      -
-##   -------
-##   seqinfo: 2 sequences from hg19 genome
-```
-
----
-
-Other useful operations on single ranges include
-
-shifting
-
-
-
-```r
-shift(gr, 5)
-```
-
-```
-## GRanges object with 3 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1      8-22      +
-##   [2]     chr1     15-33      +
-##   [3]     chr2    55-109      -
-##   -------
-##   seqinfo: 2 sequences from hg19 genome
-```
-
---
-
-obtaining flanking sequence. Note how the strand information is taken into account.
-
-
-
-```r
-flank(gr, 2)
-```
-
-```
-## GRanges object with 3 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1       1-2      +
-##   [2]     chr1       8-9      +
-##   [3]     chr2   105-106      -
-##   -------
-##   seqinfo: 2 sequences from hg19 genome
-```
-
----
-
-finding the midpoint of each range
-
-
-
-```r
-resize(gr, width = 1, fix = "center")
-```
-
-```
-## GRanges object with 3 ranges and 0 metadata columns:
-##       seqnames    ranges strand
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
-##   [1]     chr1        10      +
-##   [2]     chr1        19      +
-##   [3]     chr2        77      -
-##   -------
-##   seqinfo: 2 sequences from hg19 genome
-```
-
-In addition to the intra-range operations, there are also many useful operations that involve multiple ranges. For example, we can
-
-        find overlaps between ranges
 
 --
 
 
 ```r
-gr2 &lt;- GRanges(seqnames = c("chr2", "chr1"),
-               ranges = IRanges(start = c(90, 5), 
-                                end = c(100, 15)),
-               strand = c("-", "+"))
-        findOverlaps(query = gr, subject = gr2)
+ir0
 ```
 
 ```
-## Hits object with 3 hits and 0 metadata columns:
-##       queryHits subjectHits
-##       &lt;integer&gt;   &lt;integer&gt;
-##   [1]         1           2
-##   [2]         2           2
-##   [3]         3           1
-##   -------
-##   queryLength: 3 / subjectLength: 2
+## IRanges object with 4 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]         5         9         5
+##   [2]        10        14         5
+##   [3]        15        19         5
+##   [4]        20        24         5
 ```
 
 ---
 
-GRanges objects can have associated metadata. This is provided in the mcols() slot of the object.
+# Grouping `Ranges`
+
+
+```r
+ir1
+```
+
+```
+## IRanges object with 5 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]         2         4         3
+##   [2]         3         6         4
+##   [3]         4         8         5
+##   [4]         5        10         6
+##   [5]         6        12         7
+```
+
+---
+
+# Grouping `Ranges`
+
+
+```r
+ir0 %&gt;% filter_by_overlaps(ir1)
+```
+
+```
+## IRanges object with 2 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]         5         9         5
+##   [2]        10        14         5
+```
+
+---
+
+# Grouping `Ranges`
+
+
+```r
+ir0 %&gt;% filter_by_non_overlaps(ir1) 
+```
+
+```
+## IRanges object with 2 ranges and 0 metadata columns:
+##           start       end     width
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+##   [1]        15        19         5
+##   [2]        20        24         5
+```
+
+---
+
+# Summarising `Ranges`
+
+The `summarise` function will return a `DataFrame` because the information required to return a `Ranges` object is lost. It is often most useful to use `summarise()` in combination with the `group_by()` family of functions. 
+
+
+```r
+ir1 &lt;- ir1 %&gt;%
+  mutate(gc = runif(length(.)))
+```
 
 
 
 ```r
-mcols(gr)$score &lt;- 1:3
-    gr
+ir0 %&gt;% 
+  group_by_overlaps(ir1) %&gt;%
+  summarise(gc = mean(gc))
 ```
 
 ```
-## GRanges object with 3 ranges and 1 metadata column:
-##       seqnames    ranges strand |     score
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;
-##   [1]     chr1      3-17      + |         1
-##   [2]     chr1     10-28      + |         2
-##   [3]     chr2    50-104      - |         3
-##   -------
-##   seqinfo: 2 sequences from hg19 genome
+## DataFrame with 2 rows and 2 columns
+##       query                gc
+##   &lt;integer&gt;         &lt;numeric&gt;
+## 1         1 0.435306108905934
+## 2         2 0.362076534773223
 ```
 
 ---
 
-Lists of genomic ranges
+# Joins: finding overlaps between `Ranges`
 
-    In some cases, ranges come in groups - for example, exons within a transcript.
-    In these situations, it often makes sense to represent each group of ranges as a GRanges object, and the full set of groups as a list of such ranges.
-    The GRangesList class covers these situations.
-
-    All ranges objects share the same genome information
-
-
----
+A join acts on two GRanges objects, a query and a subject.
 
 
 ```r
-grl &lt;- GRangesList(
-    tx1.1 = GRanges(seqnames = "chr1",
-                    ranges = IRanges(start = c(50, 125, 188),
-                                     end = c(75, 130, 257)),
-                    strand = "+",
-                    symbol = "tx1.1", transcript = "tx1.1", 
-                    gene = "gene1", exon = paste0("ex1.", 1:3)),
-    tx1.2 = GRanges(seqnames = "chr1",
-                    ranges = IRanges(start = c(50, 125, 200),
-                                     end = c(75, 130, 227)),
-                    strand = "+",
-                    symbol = "tx1.2", transcript = "tx1.2", 
-                    gene = "gene1", exon = paste0("ex1.", c(1, 2, 4))),
-    tx2.1 = GRanges(seqnames = "chr2",
-                    ranges = IRanges(start = c(289, 318),
-                                     end = c(300, 350)),
-                    strand = "-",
-                    symbol = "tx2.1", transcript = "tx2.1",
-                    gene = "gene2", exon = paste0("ex2.", 1:2))
-    )
-    seqlengths(grl) &lt;- c(chr1 = 1000, chr2 = 500)
-    grl
+query &lt;- data.frame(seqnames = "chr1",
+               strand = c("+", "-"),
+               start = c(1, 9), 
+               end =  c(7, 10),
+               key.a = letters[1:2]) %&gt;% 
+  as_granges()
+```
+
+
+
+```r
+subject &lt;- data.frame(seqnames = "chr1",
+               strand = c("-", "+"),
+               start = c(2, 6), 
+               end = c(4, 8),
+               key.b = LETTERS[1:2]) %&gt;% 
+  as_granges()
+```
+
+---
+
+# Joins: finding overlaps between `Ranges`
+
+![Query and Subject Ranges](Genomics_Data_Manipulation_files/figure-html/unnamed-chunk-57-1.png)
+
+---
+
+# Joining Ranges
+
+All joining methods in `plyranges` result in a set of sequences based on overlap or proximity of ranges and use those hits to merge the two 
+datasets in different ways.
+
+--
+
+There are four methods:
+
++ _overlap_
++ _nearest_ 
++ _precede_
++ _follow_ 
+
+---
+
+# Joining Ranges
+
+We can further restrict the matching by whether the query is completely _within_ the subject, and adding the _directed_ suffix ensures that matching ranges have the same direction (strand).
+
+--
+
+&lt;img src="img/olaps.png" width="600px" /&gt;
+
+---
+
+`# Intersecting Ranges`
+
+`join_overlap_intersect()` will return a `Ranges` object where the start, end, and width coordinates correspond to the amount of any overlap between the left and right input `Ranges`. 
+
+It also returns any metadatain the subject range if the subject overlaps the query.
+
+
+```r
+intersect_rng &lt;- join_overlap_intersect(query, subject)
+intersect_rng
 ```
 
 ```
-## GRangesList object of length 3:
-## $tx1.1 
-## GRanges object with 3 ranges and 4 metadata columns:
-##       seqnames    ranges strand |      symbol  transcript        gene
-##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt; &lt;character&gt; &lt;character&gt;
-##   [1]     chr1     50-75      + |       tx1.1       tx1.1       gene1
-##   [2]     chr1   125-130      + |       tx1.1       tx1.1       gene1
-##   [3]     chr1   188-257      + |       tx1.1       tx1.1       gene1
-##              exon
-##       &lt;character&gt;
-##   [1]       ex1.1
-##   [2]       ex1.2
-##   [3]       ex1.3
-## 
-## $tx1.2 
-## GRanges object with 3 ranges and 4 metadata columns:
-##       seqnames  ranges strand | symbol transcript  gene  exon
-##   [1]     chr1   50-75      + |  tx1.2      tx1.2 gene1 ex1.1
-##   [2]     chr1 125-130      + |  tx1.2      tx1.2 gene1 ex1.2
-##   [3]     chr1 200-227      + |  tx1.2      tx1.2 gene1 ex1.4
-## 
-## $tx2.1 
-## GRanges object with 2 ranges and 4 metadata columns:
-##       seqnames  ranges strand | symbol transcript  gene  exon
-##   [1]     chr2 289-300      - |  tx2.1      tx2.1 gene2 ex2.1
-##   [2]     chr2 318-350      - |  tx2.1      tx2.1 gene2 ex2.2
-## 
-## -------
-## seqinfo: 2 sequences from an unspecified genome
+## GRanges object with 2 ranges and 2 metadata columns:
+##       seqnames    ranges strand |    key.a    key.b
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;factor&gt; &lt;factor&gt;
+##   [1]     chr1       2-4      + |        a        A
+##   [2]     chr1       6-7      + |        a        B
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 ```
 
+---
+
+# Intersecting Ranges
+
+![Intersect Join](Genomics_Data_Manipulation_files/figure-html/unnamed-chunk-60-1.png)
+
+---
+
+# Overlapping Ranges
+
+The `join_overlap_inner()` function will return the `Ranges` in the query that overlap any `Ranges` in the subject. Like the `join_overlap_intersect()` function metadata of the subject `Range` is returned if it overlaps the query. 
+
+
+```r
+inner_rng &lt;- join_overlap_inner(query, subject)
+inner_rng
+```
+
+```
+## GRanges object with 2 ranges and 2 metadata columns:
+##       seqnames    ranges strand |    key.a    key.b
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;factor&gt; &lt;factor&gt;
+##   [1]     chr1       1-7      + |        a        A
+##   [2]     chr1       1-7      + |        a        B
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+---
+
+# Overlapping Ranges
+
+![Inner Join](Genomics_Data_Manipulation_files/figure-html/unnamed-chunk-62-1.png)
+
+--
+
+We also provide a convenience method called `find_overlaps` that computes the same result as `join_overlap_inner()`.
+
+
+```r
+find_overlaps(query, subject)
+```
+
+```
+## GRanges object with 2 ranges and 2 metadata columns:
+##       seqnames    ranges strand |    key.a    key.b
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;factor&gt; &lt;factor&gt;
+##   [1]     chr1       1-7      + |        a        A
+##   [2]     chr1       1-7      + |        a        B
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+---
+
+# Finding Neighboring Ranges
+
+Plyranges also has methods for finding nearest, preceding or following `Ranges`. This is similar in concept to finding overlaps
+--
+
+&lt;img src="img/neighbours.png" width="600px" /&gt;
+
+---
+
+# Finding Neighboring Ranges
+
+
+```r
+join_nearest(ir0, ir1)
+```
+
+```
+## IRanges object with 4 ranges and 1 metadata column:
+##           start       end     width |                 gc
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; |          &lt;numeric&gt;
+##   [1]         5         9         5 | 0.0979566001333296
+##   [2]        10        14         5 | 0.0979566001333296
+##   [3]        15        19         5 | 0.0979566001333296
+##   [4]        20        24         5 | 0.0979566001333296
+```
+
+---
+
+# Finding Neighboring Ranges
+
+
+```r
+join_follow(ir0, ir1)
+```
+
+```
+## IRanges object with 4 ranges and 1 metadata column:
+##           start       end     width |                 gc
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; |          &lt;numeric&gt;
+##   [1]         5         9         5 |  0.809384200721979
+##   [2]        10        14         5 |  0.982553884619847
+##   [3]        15        19         5 | 0.0979566001333296
+##   [4]        20        24         5 | 0.0979566001333296
+```
+
+---
+
+# Finding Neighboring Ranges
+
+
+```r
+join_precede(ir0, ir1) # nothing precedes returns empty `Ranges`
+```
+
+```
+## IRanges object with 0 ranges and 1 metadata column:
+##        start       end     width |        gc
+##    &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; | &lt;numeric&gt;
+```
+
+---
+
+# Finding Neighboring Ranges
+
+
+```r
+join_precede(ir1, ir0)
+```
+
+```
+## IRanges object with 5 ranges and 1 metadata column:
+##           start       end     width |                 gc
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; |          &lt;numeric&gt;
+##   [1]         2         4         3 |  0.809384200721979
+##   [2]         3         6         4 |  0.034517481457442
+##   [3]         4         8         5 |  0.982553884619847
+##   [4]         5        10         6 |  0.626196469413117
+##   [5]         6        12         7 | 0.0979566001333296
+```
+
+---
+
+# Example: dealing with multi-mapping
+This example is taken from the Bioconductor support [site](https://support.bioconductor.org/p/100046/).
+
+--
+
+We have two `Ranges` objects. The first contains single nucleotide positions
+corresponding to an intensity measurement such as a ChiP-seq experiment, 
+while the other contains coordinates for two genes of interest.
+
+--
+
+
+We want to identify which positions in the `intensities` `Ranges` overlap the genes, where each row corresponds to a position that overlaps a single gene.
+
+---
+
+# Example: dealing with multi-mapping
+
+First we create the two `Ranges` objects
+
+--
+
+
+```r
+intensities &lt;- data.frame(seqnames = "VI",
+                          start = c(3320:3321,3330:3331,3341:3342),
+                          width = 1) %&gt;% 
+  as_granges()
+
+intensities
+```
+
+```
+## GRanges object with 6 ranges and 0 metadata columns:
+##       seqnames    ranges strand
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt;
+##   [1]       VI      3320      *
+##   [2]       VI      3321      *
+##   [3]       VI      3330      *
+##   [4]       VI      3331      *
+##   [5]       VI      3341      *
+##   [6]       VI      3342      *
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+---
+
+# Example: dealing with multi-mapping
+
+
+```r
+genes &lt;- data.frame(seqnames = "VI", 
+                    start = c(3322, 3030),
+                    end = c(3846, 3338),
+                    gene_id=c("YFL064C", "YFL065C")) %&gt;% 
+  as_granges()
+                    
+genes
+```
+
+```
+## GRanges object with 2 ranges and 1 metadata column:
+##       seqnames    ranges strand |  gene_id
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;factor&gt;
+##   [1]       VI 3322-3846      * |  YFL064C
+##   [2]       VI 3030-3338      * |  YFL065C
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+---
+
+# Example: dealing with multi-mapping
+
+Now to find where the positions overlap each gene, we can perform an overlap
+join. This will automatically carry over the gene_id information as well as
+their coordinates (we can drop those by only selecting the gene_id). 
+
+--
+
+
+```r
+olap &lt;- join_overlap_inner(intensities, genes) %&gt;%
+  select(gene_id)
+olap
+```
+
+```
+## GRanges object with 8 ranges and 1 metadata column:
+##       seqnames    ranges strand |  gene_id
+##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;factor&gt;
+##   [1]       VI      3320      * |  YFL065C
+##   [2]       VI      3321      * |  YFL065C
+##   [3]       VI      3330      * |  YFL065C
+##   [4]       VI      3330      * |  YFL064C
+##   [5]       VI      3331      * |  YFL065C
+##   [6]       VI      3331      * |  YFL064C
+##   [7]       VI      3341      * |  YFL064C
+##   [8]       VI      3342      * |  YFL064C
+##   -------
+##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+---
+
+# Example: dealing with multi-mapping
+
+Several positions match to both genes. We can count them using `summarise`
+and grouping by the `start` position:
+
+--
+
+
+```r
+olap %&gt;% 
+  group_by(start) %&gt;%
+  summarise(n = n())
+```
+
+```
+## DataFrame with 6 rows and 2 columns
+##       start         n
+##   &lt;integer&gt; &lt;integer&gt;
+## 1      3320         1
+## 2      3321         1
+## 3      3330         2
+## 4      3331         2
+## 5      3341         1
+## 6      3342         1
+```
+
+---
+
+# Grouping by overlaps
+
+It's also possible to group by overlaps. Using this approach we can count the number of overlaps that are greater than 0. 
+
+--
+
+
+```r
+grp_by_olap &lt;- ir0 %&gt;% 
+  group_by_overlaps(ir1)
+grp_by_olap
+```
+
+```
+## IRanges object with 6 ranges and 2 metadata columns:
+## Groups: query [2]
+##           start       end     width |                 gc     query
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; |          &lt;numeric&gt; &lt;integer&gt;
+##   [1]         5         9         5 |  0.034517481457442         1
+##   [2]         5         9         5 |  0.982553884619847         1
+##   [3]         5         9         5 |  0.626196469413117         1
+##   [4]         5         9         5 | 0.0979566001333296         1
+##   [5]        10        14         5 |  0.626196469413117         2
+##   [6]        10        14         5 | 0.0979566001333296         2
+```
+
+---
+
+# Grouping by overlaps
+
+
+```r
+grp_by_olap %&gt;%
+  mutate(n_overlaps = n())
+```
+
+```
+## IRanges object with 6 ranges and 3 metadata columns:
+## Groups: query [2]
+##           start       end     width |                 gc     query
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; |          &lt;numeric&gt; &lt;integer&gt;
+##   [1]         5         9         5 |  0.034517481457442         1
+##   [2]         5         9         5 |  0.982553884619847         1
+##   [3]         5         9         5 |  0.626196469413117         1
+##   [4]         5         9         5 | 0.0979566001333296         1
+##   [5]        10        14         5 |  0.626196469413117         2
+##   [6]        10        14         5 | 0.0979566001333296         2
+##       n_overlaps
+##        &lt;integer&gt;
+##   [1]          4
+##   [2]          4
+##   [3]          4
+##   [4]          4
+##   [5]          2
+##   [6]          2
+```
+
+--
+
+Of course we can also add overlap counts via the `count_overlaps()` function.
+
+
+```r
+ir0 %&gt;%
+  mutate(n_overlaps = count_overlaps(., ir1))
+```
+
+```
+## IRanges object with 4 ranges and 1 metadata column:
+##           start       end     width | n_overlaps
+##       &lt;integer&gt; &lt;integer&gt; &lt;integer&gt; |  &lt;integer&gt;
+##   [1]         5         9         5 |          4
+##   [2]        10        14         5 |          2
+##   [3]        15        19         5 |          0
+##   [4]        20        24         5 |          0
+```
+
+---
+
+# Data Import/Output
+
+Plyranges has convenience functions for reading/writing the following data formats to/from `Ranges` objects.
+
+| `plyranges` functions | File Format |
+|-----------------------|-------------|
+|   `read_bam()`        | BAM         |
+| `read_bed()`/`write_bed()` | BED    |
+| `read_bedgraph()`/ `write_bedgraph()` | BEDGraph |
+| `read_narrowpeaks()`/ `write_narrowpeaks()` | narrowPeaks |
+| `read_gff()` / `write_gff()` | GFF(1-3) / GTF |
+| `read_bigwig()` / `write_bigwig()` |  BigWig |
+| `read_wig()` / `write_wig()` | Wig |
+
+---
+
+# Learning more
+
+- The [Bioc 2018 Workshop book](https://bioconductor.github.io/BiocWorkshops/fluent-genomic-data-analysis-with-plyranges.html) has worked examples of using `plyranges` to analyse
+publicly available genomics data.
+- The [extended vignette in the plyrangesWorkshops package](https://github.com/sa-lee/plyrangesWorkshops) has a detailed
+walk through of using plyranges for coverage analysis.
+- The [case study](https://github.com/mikelove/plyrangesTximetaCaseStudy) by Michael Love using plyranges with [tximeta](https://bioconductor.org/packages/release/bioc/html/tximeta.html) to follow
+up on interesting hits from a combined RNA-seq and ATAC-seq analysis. 
+- The [journal article](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-018-1597-8) ([preprint here](https://www.biorxiv.org/content/early/2018/05/23/327841)) has
+details about the overall philosophy and design of plyranges.
 
 ---
 
 # Exercise
 
-In practice, the locations of known genomic features (exons, genes, transcripts, UTRs, …) along the genome are often stored in so called gtf (gene transfer format) files. These files can be imported into a GRanges object using the import() function from the rtracklayer Bioconductor package. Download the gencode.v28.annotation.1.1.10M.gtf file from the course webpage, and read it into R in this way.
+In practice, the locations of known genomic features (exons, genes, transcripts, UTRs, …) along the genome are often stored in so called gtf (gene transfer format) files. 
+
+--
+
+These files can be imported into a GRanges object using the import() function from the rtracklayer Bioconductor package.
+
+--
+
+We will load in a gtf file from gencode and read it into R in this way.
+
+--
 
 
 
@@ -999,6 +1528,8 @@ gtf &lt;- rtracklayer::import("data/gencode.v28.annotation.1.1.10M.gtf")
 ---
 
 Confirm that the gtf object is indeed a GRanges object
+
+--
 
 
 
@@ -1016,6 +1547,8 @@ class(gtf)
 
 How many records are there in the object?
 
+--
+
 
 
 ```r
@@ -1030,6 +1563,8 @@ length(gtf)
 
 From which chromosomes do the records come?
 
+--
+
 
 ```r
 seqlevels(gtf)
@@ -1043,6 +1578,7 @@ seqlevels(gtf)
 
 Use the subset function to extract only the records for the CHD5 gene. How many annotated transcripts does this gene have?
 
+--
 
 
 ```r
@@ -1054,24 +1590,27 @@ length(subset(gtfsub, type == "transcript"))
 ## [1] 6
 ```
 
-
 ---
 
 
 # SummarizedExperiment
 
 The purpose of the SummarizedExperiment class (provided in the package with the same name) is to hold ‘rectangular’ data, together with annotations and metadata for the rows and columns. In other words, all the data associated with an experiment!
-    This class (or extensions) is widely used throughout the Bioconductor ecosystem, e.g., for representing RNA-seq, ChIP-seq, methylation and mass cytometry data.
 
-From https://www.nature.com/articles/nmeth.3252
+--
 
-    The SummarizedExperiment object consists of three types of ‘tables’, denoted
-        assays (actually a list of matrices of the same size, containing the observed data, e.g., gene expression values)
-        rowData (annotations for the rows, i.e., the features). This can be replaced by rowRanges (a GRanges object) that can also hold genomic range information, e.g., the locations of genes
+This class (or extensions) is widely used throughout the Bioconductor ecosystem, e.g., for representing RNA-seq, ChIP-seq, methylation and mass cytometry data.
+
+--
+
+The SummarizedExperiment object consists of three types of ‘tables’, denoted assays (actually a list of matrices of the same size, containing 
+1. the observed data, e.g., gene expression values
+1. rowData (annotations for the rows, i.e., the features). This can be replaced by rowRanges (a GRanges object) that can also hold genomic range information, e.g., the locations of genes
+1. colData (annotations for the columns, i.e., the samples)
 
 ---
 
-# colData (annotations for the columns, i.e., the samples)
+# SummarizedExperiment
 
 
 ```r
@@ -1160,8 +1699,11 @@ se
 
 ---
 
+# SummarizedExperiment
+
 The SummarizedExperiment class has accessor functions to extract the individual components.
 
+--
 
 
 ```r
@@ -1177,12 +1719,12 @@ assayNames(se)
 ```
 
 ```
-##           1        2         3
-## G1 4.978651 9.752043 1.1856510
-## G2 3.048621 9.358773 0.2063873
-## G3 9.284991 1.597914 8.0402410
-## G4 4.453150 1.779317 3.2860828
-## G5 6.024305 7.700847 7.3541285
+##           1          2        3
+## G1 3.285959 4.94475231 9.342421
+## G2 2.882006 0.05671481 7.622316
+## G3 6.805395 1.99227279 3.069816
+## G4 1.309083 0.02900511 5.425321
+## G5 3.509313 0.10588208 4.976588
 ```
 
 ```r
@@ -1215,9 +1757,13 @@ assayNames(se)
 
 ---
 
+# SummarizedExperiment
+
+--
+
 There are also convenient subsetting functions. Note how all the relevant parts of the objects are subset!
 
-
+--
 
 
 ```r
@@ -1240,9 +1786,9 @@ There are also convenient subsetting functions. Note how all the relevant parts 
 ```
 
 ```
-##           1        2         3
-## G1 4.978651 9.752043 1.1856510
-## G2 3.048621 9.358773 0.2063873
+##           1          2        3
+## G1 3.285959 4.94475231 9.342421
+## G2 2.882006 0.05671481 7.622316
 ```
 
 ```r
@@ -1272,7 +1818,13 @@ There are also convenient subsetting functions. Note how all the relevant parts 
 
 ---
 
+# SummarizedExperiment
+
+--
+
 If a GRanges object is used to represent the row annotations, the mcols() slot of the GRanges object is returned by rowData(se).
+
+--
 
 
 
@@ -1332,20 +1884,24 @@ If a GRanges object is used to represent the row annotations, the mcols() slot o
 ## GRanges object with 5 ranges and 1 metadata column:
 ##       seqnames    ranges strand |        gene
 ##          &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt;
-##   [1]     chr1     41-90      + |          G1
-##   [2]     chr1     26-75      + |          G2
-##   [3]     chr1     31-80      + |          G3
-##   [4]     chr1     50-99      + |          G4
-##   [5]     chr1     23-72      + |          G5
+##   [1]     chr1     42-91      + |          G1
+##   [2]     chr1     13-62      + |          G2
+##   [3]     chr1    69-118      + |          G3
+##   [4]     chr1    75-124      + |          G4
+##   [5]     chr1    62-111      + |          G5
 ##   -------
 ##   seqinfo: 1 sequence from an unspecified genome; no seqlengths
 ```
 
 ---
 
-Exercise
+# Exercise
+
+--
 
 Here we will explore a real RNA-seq data set, which is provided in the airway Bioconductor package and stored in a RangedSummarizedExperiment object. First load the package and attach the data set.
+
+--
 
 
 ```r
@@ -1367,9 +1923,11 @@ airway
 
 ---
 
+# Exercise
+
 What type of data value are available in this object? How many samples are there? How many features?
 
-
+--
 
 
 ```r
@@ -1390,9 +1948,11 @@ dim(airway)
 
 ---
 
+# Exercise
+
 What is the total number of sequencing reads assigned to genes for each sample?
 
-
+--
 
 
 ```r
@@ -1408,19 +1968,7 @@ colSums(assay(airway, "counts"))
 
 ---
 
-
-# Further reading
-
-    An overview of the Bioconductor project and its capabilities is given in Huber et al.: Orchestrating high-throughput genomic analysis with Bioconductor. Nature Methods 12:115–121 (2015).
-    An introduction to the analysis of ranges in Bioconductor (particularly useful if you have experience with bedtools) is provided in the HelloRanges package
-    Bioconductor provides a long list of material from previous courses, some videos and links to upcoming events
-    A Bioconductor cheat sheet from Mike Love
-
----
-
 # public data resources and bioconductor
-
-5.2.4 R/Bioconductor packages used
 
 [GEOquery](https://bioconductor.org/packages/release/bioc/html/GEOquery.html): Access to the NCBI Gene Expression Omnibus (GEO), a public repository of gene expression (primarily microarray) data.
 
@@ -1436,180 +1984,15 @@ colSums(assay(airway, "counts"))
 
 [OmicIDXR](https://seandavi.github.io/OmicIDXR/)
 
-
 ---
 
+# Further reading
 
-## Why use Bioconductor
+An overview of the Bioconductor project and its capabilities is given in Huber et al.: Orchestrating high-throughput genomic analysis with Bioconductor. Nature Methods 12:115–121 (2015).
 
-Bioconductor is a very active community of developers on the cutting edge of genomic data analysis, and such, Bioconductor packages form the basis for a high impact ecosystem. Beyond that, Bioconductor packages typically synthesize well, and by becoming part of the community, you may find your work and impact magnified as packages and workflows are built based on your contributions. This is more true now than ever thanks to the partnership with f1000 research https://f1000research.com/gateways/bioconductor .
+An introduction to the analysis of ranges in Bioconductor (particularly useful if you have experience with bedtools) is provided in the HelloRanges package
 
----
-
-# Data
-
-Bioconductor packages make use of data in wide variety of formats.
-
-1. If your data is large (Bioconductor software packages are limited to 5mb), you might want to create a Bioconductor data package like breastCancerUPP which provides gene cancer expression data https://www.bioconductor.org/packages/release/data/experiment/html/breastCancerUPP.html
-2. If you want to distribute whole genome resources, you might consider AnnotationHub http://bioconductor.org/packages/release/bioc/html/AnnotationHub.html
-3. Experimental data can be stored in ExperimentHub  https://bioconductor.org/packages/release/bioc/html/ExperimentHub.html
-4. Data can be served via api's such as REST using tools like swagger https://swagger.io/
-5. HDF5 data can be shared using services like the HDF Scalable Data Service at http://www.hdfgroup.org and accessed using tools like http://bioconductor.org/packages/release/bioc/html/rhdf5client.html
-6. Data can be shared in Amazon web services S3 buckets and Google Big Query https://cran.r-project.org/web/packages/bigQueryR/vignettes/bigQueryR.html
-7. Data can be shared in databases such as MySQL, Oracle, MongoDB, etc and accessed via tools you can find here https://cran.r-project.org/web/views/Databases.html
-
-If your data is small, then you can include the data directly in your package.
-
----
-
-### GenomicRanges
-
-GenomicRanges are the primary way of storing information on ranged genomic data. GenomicRanges extend IRanges to create an efficient way to store, query, find overlaps between sets of annotated genomic ranges.
-
-Borrowing the example from http://bioconductor.org/packages/release/bioc/vignettes/GenomicRanges/inst/doc/GenomicRangesIntroduction.html
-
-
-```r
-suppressPackageStartupMessages({library(GenomicRanges)})
-gr &lt;- GRanges(
-    seqnames = Rle(c("chr1", "chr2", "chr1", "chr3"), c(1, 3, 2, 4)),
-    ranges = IRanges(101:110, end = 111:120, names = head(letters, 10)),
-    score = 1:10,
-    GC = seq(1, 0, length=10))
-gr
-```
-
-```
-## GRanges object with 10 ranges and 2 metadata columns:
-##     seqnames    ranges strand |     score                GC
-##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
-##   a     chr1   101-111      * |         1                 1
-##   b     chr2   102-112      * |         2 0.888888888888889
-##   c     chr2   103-113      * |         3 0.777777777777778
-##   d     chr2   104-114      * |         4 0.666666666666667
-##   e     chr1   105-115      * |         5 0.555555555555556
-##   f     chr1   106-116      * |         6 0.444444444444444
-##   g     chr3   107-117      * |         7 0.333333333333333
-##   h     chr3   108-118      * |         8 0.222222222222222
-##   i     chr3   109-119      * |         9 0.111111111111111
-##   j     chr3   110-120      * |        10                 0
-##   -------
-##   seqinfo: 3 sequences from an unspecified genome; no seqlengths
-```
-
-Here is an example of a small GenomicRange object that contains 10 ranges and some data.
-
-If you split this range into 2.
-
-
-```r
-gr1=gr[c(1,3,5,7,9),]
-gr2=gr[c(2,4,6,8,10),]
-gr1
-```
-
-```
-## GRanges object with 5 ranges and 2 metadata columns:
-##     seqnames    ranges strand |     score                GC
-##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
-##   a     chr1   101-111      * |         1                 1
-##   c     chr2   103-113      * |         3 0.777777777777778
-##   e     chr1   105-115      * |         5 0.555555555555556
-##   g     chr3   107-117      * |         7 0.333333333333333
-##   i     chr3   109-119      * |         9 0.111111111111111
-##   -------
-##   seqinfo: 3 sequences from an unspecified genome; no seqlengths
-```
-
-```r
-gr2
-```
-
-```
-## GRanges object with 5 ranges and 2 metadata columns:
-##     seqnames    ranges strand |     score                GC
-##        &lt;Rle&gt; &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt;         &lt;numeric&gt;
-##   b     chr2   102-112      * |         2 0.888888888888889
-##   d     chr2   104-114      * |         4 0.666666666666667
-##   f     chr1   106-116      * |         6 0.444444444444444
-##   h     chr3   108-118      * |         8 0.222222222222222
-##   j     chr3   110-120      * |        10                 0
-##   -------
-##   seqinfo: 3 sequences from an unspecified genome; no seqlengths
-```
-
-We can get the overlapping regions with findOverlaps
-
-
-```r
-ov=findOverlaps(gr1,gr2)
-ov
-```
-
-```
-## Hits object with 8 hits and 0 metadata columns:
-##       queryHits subjectHits
-##       &lt;integer&gt;   &lt;integer&gt;
-##   [1]         1           3
-##   [2]         2           1
-##   [3]         2           2
-##   [4]         3           3
-##   [5]         4           4
-##   [6]         4           5
-##   [7]         5           4
-##   [8]         5           5
-##   -------
-##   queryLength: 5 / subjectLength: 5
-```
-
-Here we see that the first range in gr1 overlaps with the third range in gr2.
-
----
-
-### SummarizedExperiments
-
-SummarizedExperiments (and RangedSummarizedExperiments) are the defacto way to store rectangular experimental data such as sequencing and microrarray data.
-
-Looking at: http://www.bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html
-
-![](images/se.png)
-
-A summarized experiment is constructed with information on features as rows and samples as columns. Multiple assays can be stored in a single experiment along with experiment level metadata and sample level data. SummarizedExperiments can be easily subsetted and filtered while preserving the stucture and metadata.
-
----
-
-### MultiAssayExperiments
-
-MultiAssayExperiments extend SummarizedExperiments and excels at representing multiomic data where the dimensions of the assays are not the same.
-
-### SingleCellExperiments
-
-SingleCellExperiments are used to store data from single cell experiments.
-
-Looking atthe example here:  http://bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html
-
-
-```r
-suppressPackageStartupMessages({library(SingleCellExperiment)})
-counts &lt;- matrix(rpois(100, lambda = 10), ncol=10, nrow=10)
-sce &lt;- SingleCellExperiment(assays = list(counts = counts))
-sce
-```
-
-```
-## class: SingleCellExperiment 
-## dim: 10 10 
-## metadata(0):
-## assays(1): counts
-## rownames: NULL
-## rowData names(0):
-## colnames: NULL
-## colData names(0):
-## reducedDimNames(0):
-## spikeNames(0):
-```
-
-This is a basic SingleCellExperiment. SingleCellExperiments can be used to store information on the assays along with spikein information, metadata, and even reduced dimensional data such as from PCA and tSNE clusters.
+Bioconductor provides a long list of material from previous courses, some videos and links to upcoming events
 
 ---
 
