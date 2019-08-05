@@ -44,7 +44,7 @@ glossary <- function(term, display = NULL, shortdef = "", link = TRUE) {
                          error = function(e) { "" })
   }
   
-  ## add to global glossary for this book
+  # add to global glossary for this book
   myglossary[lcterm] <<- shortdef
   
   if (link) {
@@ -56,7 +56,7 @@ glossary <- function(term, display = NULL, shortdef = "", link = TRUE) {
 }
 ```
 
-## Learning Objectives
+# Learning Objectives
 
 1. Understand the components of the [RStudio IDE](#rstudio_ide)
 2. Type commands into the [console](#console)
@@ -68,7 +68,7 @@ glossary <- function(term, display = NULL, shortdef = "", link = TRUE) {
 
 ---
 
-## Resources
+# Resources
 
 * [Chapter 1: Introduction](http://r4ds.had.co.nz/introduction.html) in *R for Data Science*
 
@@ -82,7 +82,7 @@ glossary <- function(term, display = NULL, shortdef = "", link = TRUE) {
 
 ---
 
-## What is R?
+# What is R?
 
 ```{r, echo = F, out.width = "10%"}
 knitr::include_graphics("images/01/new_R_logo.png", dpi = NA)
@@ -108,7 +108,15 @@ This refers to being able to document and reproduce all of the steps between raw
 
 ---
 
-### The Base R Console 
+# Why Use R
+
+```{r, echo = F, fig.align = 'center', out.width = "50%"}
+knitr::include_graphics("images/memes/why_use_R.png", dpi = NA)
+```
+
+---
+
+# The Base R Console 
 
 If you open up the application called R, you will see an "R Console" window that looks something like this.
 
@@ -126,7 +134,7 @@ Launch <img src="images/01/rstudio_icon.png" style="height: 2em; vertical-align:
 
 ---
 
-### RStudio 
+# RStudio 
 
 [RStudio](http://www.rstudio.com) is an Integrated Development Environment (IDE). This is a program that serves as a text editor, file manager, and provides many functions to help you read and write R code.
 
@@ -136,7 +144,7 @@ knitr::include_graphics("images/01/rstudio.png")
 
 ---
 
-### RStudio
+# RStudio
 
 RStudio is arranged with four window `r glossary("panes")`. 
 
@@ -150,7 +158,7 @@ You can change the location of panes and what tabs are shown under **`Preference
 
 ---
 
-### Configure RStudio
+# Configure RStudio
 
 You should learn how to develop **reproducible scripts**. 
 
@@ -164,7 +172,7 @@ knitr::include_graphics("images/memes/forgetting.jpg")
 
 ---
 
-## Reproducibility
+# Reproducibility
 
 When you do things reproducibly, others can understand and check your work. 
 + The most important person who will benefit from a reproducible script is your __future self__. 
@@ -185,9 +193,9 @@ If you keep things around in your workspace, things will get messy, and unexpect
 
 ---
 
-## Getting Started
+# Getting Started
 
-### Console commands 
+# Console commands 
 
 We are first going to learn about how to interact with the console. You can consider the console a kind of **sandbox** where you can try out lines of code and adapt them. Then you can copy them back into the script editor.
 
@@ -224,8 +232,8 @@ The R console remembers a history of the commands you typed in the past. Use the
 You can break up math expressions over multiple lines; R waits for a complete expression before processing it.
 
 ```{r calc3}
-## here comes a long expression
-## let's break it over multiple lines
+# here comes a long expression
+# let's break it over multiple lines
 1 + 2 + 3 + 4 + 5 + 6 +
     7 + 8 + 9 +
     10
@@ -259,7 +267,7 @@ cat(africa) # cat() prints the string
 
 ---
 
-### Variables 
+# Variables 
 
 Often you want to store the result of some computation for later use.  You can store it in a `r glossary("variable")`. A variable in R:
 
@@ -293,8 +301,8 @@ Often you want to store the result of some computation for later use.  You can s
 Use the assignment operator `<-` to assign the value on the right to the variable named on the left.
 
 ```{r assignment}
-## use the assignment operator '<-'
-## R stores the number in the variable
+# use the assignment operator '<-'
+# R stores the number in the variable
 x <- 5
 ```
 
@@ -305,7 +313,7 @@ Now that we have set `x` to a value, we can do something with it:
 ```{r var-demo}
 x * 2
 
-## R evaluates the expression and stores the result in the variable
+# R evaluates the expression and stores the result in the variable
 boring_calculation <- 2 + 2
 ```
 
@@ -338,7 +346,7 @@ After all the code above is run:
 
 ---
 
-### The environment
+# The environment
 
 Anytime you assign something to a new variable, R creates a new object in the `r glossary("global environment")`. Objects in the global environment exist until you end your session; then they disappear forever (unless you save them).
 
@@ -358,7 +366,7 @@ rm(list = ls()) # clear out the global environment
 
 ---
 
-### Whitespace
+# Whitespace
 
 When you see `>` at the beginning of a line, that means R is waiting for you to start a new command.  
 
@@ -383,16 +391,16 @@ If you want to cancel whatever command you started, just press the Esc key in th
 It is often useful to break up long functions onto several lines.
 
 ```{r}
-cat("3, 6, 9, the goose drank wine",
-    "The monkey chewed tobacco on the streetcar line",
-    "The line broke, the monkey got choked",
-    "And they all went to heaven in a little rowboat",
+cat("row, row, row your boat",
+    "gently down the stream",
+    "merrily, merrily, merrily, merrily",
+    "life is but a dream.",
     sep = "  \n")
 ```
 
 ---
 
-### Function syntax 
+# Function syntax 
 
 A lot of what you do in R involves calling a `r glossary("function")` and storing the results. A function is a named section of code that can be reused. 
 
@@ -412,7 +420,7 @@ You can check this by typing `?sd` (or whatever function name you're looking up)
 
 ---
 
-## Functions
+# Functions
 
 Most functions return a value, but may also produce side effects like printing to the console.
 
@@ -430,7 +438,7 @@ where `n` is the number of randomly generated numbers you want, `mean` is the me
 
 ---
 
-## Functions
+# Functions
 
 ```{r rnorm-error, error = TRUE}
 rnorm()
@@ -444,7 +452,7 @@ rnorm(10)
 
 ---
 
-## Functions
+# Functions
 
 If you want 10 numbers from a distribution with a mean of 100:
 
@@ -472,7 +480,7 @@ rnorm(10, sd = 100)
 
 ---
 
-## Functions
+# Functions
 
 Some functions give a list of options after an argument; this means the default value is the first option. The usage entry for the `power.t.test()` function looks like this:
 
@@ -494,7 +502,7 @@ power.t.test(n = NULL, delta = NULL, sd = 1, sig.level = 0.05,
 ---
 
 
-### Getting help 
+# Getting help 
 
 Start up help in a browser using the function `help.start()`.
 
@@ -524,7 +532,7 @@ When the package isn't loaded or you aren't sure what package the function is in
 
 ---
 
-## Add-on packages 
+# Add-on packages 
 
 One of the great things about R is that it is **user extensible**: anyone can create a new add-on software package that extends its functionality. 
 
@@ -536,7 +544,7 @@ There are packages for data visualisation, machine learning, neuroimaging, eyetr
 
 ---
 
-## Packages
+# Packages
 
 Add-on packages are not distributed with base R, but have to be downloaded and installed from an archive, in the same way that you would, for instance, download and install an app on your smartphone.
 
@@ -554,7 +562,7 @@ There is an important distinction between **installing** a package and **loading
 
 ---
 
-### Installing a package 
+# Installing a package 
 
 ```{r, echo = F, out.width = "50%"}
 knitr::include_graphics("images/memes/pokemon.gif", dpi = NA)
@@ -590,7 +598,7 @@ If you don't get an error message, the installation was successful.
 
 ---
 
-### Loading a package
+# Loading a package
 
 This is done using `library(packagename)`. 
 
@@ -630,11 +638,7 @@ For instance, if you see `readr::read_csv()`, that refers to the function `read_
 
 ---
 
-## Bioconductor
-
----
-
-### Install from GitHub
+# Install from GitHub
 
 Many R packages are not yet on CRAN or Bioconductor because they are still in development. 
 
@@ -660,7 +664,7 @@ knitr::include_graphics("images/01/packages.png")
 
 ---
 
-##  Install a package from Github
+#  Install a package from Github
 
 ```{r, eval = FALSE}
 install.packages("devtools")
@@ -684,7 +688,7 @@ How many different ways can you find to discover what functions are available in
 
 ---
 
-## Organising a project 
+# Organising a project 
 
 Projects in RStudio are a way to group all of the files you need for one project. Most projects include scripts, data files, and output files like the PDF version of the script or images.
 
@@ -696,7 +700,7 @@ Choose **`New Project...`** under the **`File`** menu to create a new project ca
 
 ---
 
-### An Example Script
+# An Example Script
 
 Here is what an R script looks like. Don't worry about the details for now.
 
@@ -728,7 +732,7 @@ ggsave("sim_data.png", width = 8, height = 6)
 
 ---
 
-## Script Structure
+# Script Structure
 
 It's best if you follow the following structure when developing your own scripts: 
 
@@ -744,15 +748,146 @@ Often when you are working on a script, you will realize that you need to load a
 
 ---
 
-## Add Comments to your Script (The Why)
+# Add Comments to your Script (The Why)
 
 You can add comments to an R script with the hash symbol (`#`). 
 
 The R interpreter will ignore characters from the hash to the end of the line.
 
 ```{r comment-demo}
-## comments: any text from '#' on is ignored until end of line
+# comments: any text from '#' on is ignored until end of line
 22 / 7  # approximation to pi
 ```
 
 ---
+
+# Reproducible reports with R Markdown
+
+We will make reproducible reports following the principles of [literate programming](https://en.wikipedia.org/wiki/Literate_programming).
+
+--
+
+The basic idea is to have the text of the report together in a single document along with the code needed to perform all analyses and generate the tables.
+
+--
+
+The report is then "compiled" from the original format into some other, more portable format, such as HTML or PDF. 
+
+???
+
+This is different from traditional cutting and pasting approaches where, for instance, you create a graph in Microsoft Excel or a statistics program like SPSS and then paste it into Microsoft Word.
+
+---
+
+# Reproducible reports with R Markdown
+
+
+We will use [R Markdown](http://rmarkdown.rstudio.com/lesson-1.html) to create reproducible reports, which enables mixing of text and code.
+
+--
+
+A reproducible script will contain sections of code in code blocks. 
+
+--
+
+A code block starts and ends with backtick symbols in a row, with some infomation about the code between curly brackets, such as `{r chunk-name, echo=FALSE}` (this runs the code, but does not show the text of the code block in the compiled document). 
+
+--
+
+The text outside of code blocks is written in `r glossary("markdown")`, which is a way to specify formatting, such as headers, paragraphs, lists, bolding, and links.
+
+```{r img-reproducibleScript, echo=FALSE, fig.cap="A reproducible script."}
+knitr::include_graphics("images/01/reproducibleScript.png")
+```
+
+---
+
+# Reproducible reports with R Markdown
+
+If you open up a new RMarkdown file from a template, you will see an example document with several code blocks in it. 
+
+--
+
+To create an HTML or PDF report from an R Markdown (Rmd) document, you compile it.  
+
+--
+
+Compiling a document is called `r glossary("knitting", "knit")` in RStudio. 
+
+--
+
+There is a button that looks like a ball of yarn with needles through it that you click on to compile your file into a report. 
+
+---
+
+# Working Directory
+
+Where should I put all my files? 
+
+--
+
+When developing an analysis, you usually want to have all of your scripts and data files in one subtree of your computer's directory structure. 
+
+--
+
+Usually there is a single **working directory** where your data and scripts are stored.
+
+--
+
+Your script should only reference files in three locations, using the appropriate format.
+
+| Where                    | Example |
+|--------------------------|---------|
+| on the web               | "https://psyteachr.github.io/msc-data-skills/data/disgust_scores.csv" |
+| in the working directory | "disgust_scores.csv"  |
+| in a subdirectory        | "data/disgust_scores.csv" |
+
+---
+
+# Working Directory
+
+If you are working with an R Markdown file, it will automatically use the same directory the .Rmd file is in as the working directory. 
+
+--
+
+If you are working with R scripts, store your main script file in the top-level directory and manually set your working directory to that location. 
+
+--
+
+If your script needs a file in a subdirectory of `new_analysis`, say, `data/questionnaire.csv`, load it in using a `r glossary("relative path")`:
+
+```{r read-csv, eval = FALSE}
+dat <- read_csv("data/questionnaire.csv")  # right way
+```
+
+???
+
+Do not load it in using an absolute path:
+
+```{r abs-path, eval = FALSE}
+dat <- read_csv("C:/Carla's_files/thesis22/my_thesis/new_analysis/data/questionnaire.csv")   # wrong
+```
+
+```{block, type="info"}
+Also note the convention of using forward slashes, unlike the Windows-specific convention of using backward slashes. This is to make references to files platform independent.
+```
+
+---
+
+# Closing Thoughts
+
+.pull-left[
+```{r, echo = F, fig.align = 'center', out.width = "70%"}
+knitr::include_graphics("images/memes/googling.jpg", dpi = NA)
+```
+]
+.pull-right[
+```{r, echo = F, fig.align = 'center', out.width = "70%"}
+knitr::include_graphics("images/memes/changing-stuff.jpg", dpi = NA)
+```
+]
+
+
+
+
+
