@@ -70,6 +70,15 @@ install.packages("readxl")
 library(readxl)
 movie3 = read_excel("movies.xlsx", sheet = 3)
 
+## We can also import a whole excel file and store it 'excel-like' as a list
+excel_sheets('movies.xlsx')
+movie.list = list()
+for(i in 1:3){movie.list[[i]] = read_excel('movies.xlsx', sheet = i)}
+
+## Stack all the sheets together through function rbind and for loop
+movie.all = c()
+for(i in 1:3){movie.all = rbind(movie.all, read_excel('movies.xlsx', sheet = i))}
+
 ## let's play with the data.frame
 ## generate a count table of the language
 table(movie3$Language)
